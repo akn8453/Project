@@ -1,0 +1,1 @@
+mosquitto_pub -h 'industrial.api.ubidots.com' -t '/v1.6/devices/esp8266' -u 'BBFF-R5F2rSRykwP6ZLjOxXSN4h3DPFNY3' -p 1883 -q 1 -m '{"Temperature": 23}'

@@ -1,0 +1,6 @@
+paho-mqtt
+pymongo[srv]
+pyshark
+configparser
+datetime
+requests

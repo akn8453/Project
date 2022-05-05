@@ -1,0 +1,6 @@
+[Settings]
+# Set detailed log for additional debugging info
+timelimit=10
+count=4
+groupcount=5
+

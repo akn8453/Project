@@ -1,0 +1,6 @@
+timestamp,type,src_ip,dst_ip,count
+06-Apr-2022 13:53:04,BruteForce,192.168.1.100,192.168.1.12,5
+06-Apr-2022 14:03:15,GroupBruteForce,192.168.1.100,192.168.1.12,4
+06-Apr-2022 14:03:15,GroupBruteForce,192.168.1.100,192.168.1.11,2
+06-Apr-2022 14:10:06,dos_published_messages,192.168.1.100,192.168.1.11,10
+06-Apr-2022 14:22:01,dos_totaldatasize,192.168.1.100,192.168.1.11,73

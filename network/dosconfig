@@ -1,0 +1,9 @@
+[Settings]
+# condition is every client should publish only one msg within a second
+# Set max number of connected clients
+maxClients=2  
+#time window
+time=1
+# length of total messages recived in time window
+len=15
+

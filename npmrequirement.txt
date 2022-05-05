@@ -1,0 +1,5 @@
+express
+mongodb
+jquery
+jquery-csv
+cors

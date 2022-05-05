@@ -1,0 +1,11 @@
+#add this file to /lib/systemd/system
+[Unit]
+Description=technet server
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/ubuntu/technet/technetServerStart.py
+User=ubuntu
+
+[Install]
+WantedBy=multi-user.target

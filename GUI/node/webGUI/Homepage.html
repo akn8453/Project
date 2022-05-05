@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      <title>Dashboard</title>
+      <style>
+         *,*:after,*:before{
+         /*-webkit-box-sizing:border-box;
+         -moz-box-sizing:border-box;
+         -ms-box-sizing:border-box;*/
+         box-sizing:border-box;
+         }
+         .nav1{
+         width: 100%;
+         background-color: darkslategrey;
+         color:ivory;
+         padding: 10px;
+         margin:1px;
+         text-align: center;
+         }
+         a{
+         display: inline;
+         width: 30%;
+         height:100%;
+         color:aqua;
+         background-color: green;
+         margin: 10px;
+         padding: 10px;
+         }
+         h1{
+         text-align: center;
+         font-size: 46px;
+         }
+      </style>
+   </head>
+   <body>
+      <div class="nav1">
+         <p>
+            <a href="http://192.168.1.100:1234/Home" method="get" >Home</a>
+            <a href="http://192.168.1.100:1234/About" method="get" >About Us</a>
+            <a href="http://192.168.1.100:1234/charts" method="get" >Tables</a>
+         </p>
+      </div>
+      <h1 style="text-align: center;">Welcome to Technet</h1>
+      <hr/>
+      <div class="container-fluid">
+         <div class= "row">
+            <div class="col-8">
+               <h1>Sensors</h1>
+               <div>
+                  <canvas id="canvas1" class="canvas"></canvas>
+               </div>
+            </div>
+            <div class="col-4">
+               <h1>Attacks</h1>
+               <div>
+                  <canvas id="canvas2" class="canvas"></canvas>
+               </div>
+            </div>
+         </div>
+         <hr/>
+         <div class = "row ">
+            <h3>Click on Tables in Menu to Monitor.</h3>
+         </div>
+      </div>
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+      <script>
+         var ctx1 = document.getElementById('canvas1').getContext('2d');
+         var time=[],temp1=[],temp2=[];
+             var obj,myChart;
+             
+             myChart = new Chart(ctx1, {
+          type: 'line',
+          data: {
+              labels: time,
+              datasets: [{
+                  label: 'room1 Temperature',
+                  data: temp1,
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)',
+                      'rgba(153, 102, 255, 0.2)',
+                      'rgba(255, 159, 64, 0.2)'
+                  ],
+                  borderColor: [
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)'
+                  ],
+                  borderWidth: 1
+              },
+              {
+                  label: 'room2 Temperature',
+                  data: temp2,
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)',
+                      'rgba(153, 102, 255, 0.2)',
+                      'rgba(255, 159, 64, 0.2)'
+                  ],
+                  borderColor: [
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)'
+                  ],
+                  borderWidth: 1
+              }]
+          },
+          options: {
+          animation: {
+           		  duration: 0
+         		},
+              scales: {
+                  y: {
+                      beginAtZero: true
+                  }
+              }
+          }
+         });
+         var ctx2 = document.getElementById('canvas2').getContext('2d');
+         var Type=[],count=[];
+         var dict={}
+             var obj1,myPie; 
+             myPie = new Chart(ctx2, {
+         type: 'pie',
+         data: {
+         labels: Type,
+         datasets: [{
+          label: 'Attacks',
+          data: count,
+          backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 205, 86)',
+            'rgb(200, 230, 86)'
+          ],
+          hoverOffset: 4
+         }]
+         },
+         options: {
+         animation: {
+          		   duration: 0
+         		},
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: 'Attacks'
+            }
+          }
+         },
+         });
+             
+             
+             setInterval(sync, 1000);
+             function sync() {    	
+             
+                 $.get('http://192.168.1.100:1234/mongotemp1', (data) => {
+                 obj=data
+                 
+                 
+             //------------------------charts---------------------------------------------------------
+         time.length = 0
+         temp1.length = 0
+         for (var i=(obj.length)-60 ;i<obj.length;i++) {
+         	
+         	if (i%5==0){
+         		//console.log((obj[i].timestamp))
+          		time.push(obj[i].timestamp)}
+          	else{
+          		time.push("")
+          	}
+          	
+         		//console.log(obj[i].val)
+          		temp1.push(obj[i].val)
+         }
+         myChart.clear();
+         myChart.update();
+          
+         });
+         
+         $.get('http://192.168.1.100:1234/mongotemp2', (data) => {
+                 obj=data
+                 
+                 
+             //------------------------charts---------------------------------------------------------
+         time.length = 0
+         temp2.length = 0
+         for (var i=(obj.length)-60 ;i<obj.length;i++) {
+         	
+         	if (i%5==0){
+         		//console.log((obj[i].timestamp))
+          		time.push(obj[i].timestamp)}
+          	else{
+          		time.push("")
+          	}
+          	
+         		//console.log(obj[i].val)
+          		temp2.push(obj[i].val)
+         }
+         myChart.clear();
+         myChart.update();
+          
+         });
+         
+         $.get('http://192.168.1.100:1234/logcsv', (data) => {
+         obj1=data
+         Type.length = 0
+         count.length = 0
+                 /*------------------------Pie---------------------------------------------------------*/
+                 obj1.forEach(function (ob, i) {
+                 	if(Type.includes(ob.type)){
+                 		dict[ob.type]=dict[ob.type]+1;
+                 		}else{
+                 		Type.push(ob.type);
+                 		dict[ob.type]=1;
+                 		}
+                 });
+                 //console.log(`count=${count}`);
+                 //console.log(`type=${Type}`);
+                 
+                 (Object.keys(dict)).forEach(function (value,i){
+                 count.push((dict[value]));
+                 });
+         myPie.clear();
+         myPie.update();
+         });
+         }
+         
+         
+      </script>
+   </body>
+</html>

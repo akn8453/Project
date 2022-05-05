@@ -1,0 +1,12 @@
+[Settings]
+# mosquitto broker parameters
+mosquitto_ip=192.168.1.100
+mosquitto_port=1883
+mosquitto_username=cdacuser
+mosquitto_password=cdacpass
+
+mongodb_url=mongodb+srv://technet:awesomeproject@technetmongo.kalqd.mongodb.net/technetmongo?retryWrites=true&w=majority
+
+webserver_port=1234
+
+interface=wlan0
